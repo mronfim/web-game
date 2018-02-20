@@ -25,27 +25,29 @@ var players = {};
 io.on('connection', socket => {
     socket.on('new player', () => {
         players[socket.id] = {
-            x: 300,
-            y: 300,
+            x: 0,
+            y: 0,
+            z: 0,
         };
     });
     socket.on('movement', (data) => {
         var player = players[socket.id] || {};
         if (data.left) {
-            player.x -= 5;
+            player.x -= 0.05;
         }
         if (data.right) {
-            player.x += 5;
+            player.x += 0.05;
         }
         if (data.up) {
-            player.y -= 5;
+            player.y -= 0.05;
         }
         if (data.down) {
-            player.y += 5;
+            player.y += 0.05;
         }
     });
     socket.on('disconnect', () => {
         delete players[socket.id];
+        io.sockets.emit('disconnect', socket.id);
     });
 });
 
